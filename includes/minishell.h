@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+/* TOKEN TYPES */
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -30,6 +31,7 @@ typedef enum e_token_type
 	TOKEN_EOF,
 }	t_token_type;
 
+/* TOKEN */
 typedef struct s_token
 {
 	char			*value;
@@ -37,6 +39,7 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+/* REDIRECTION */
 typedef struct s_redir
 {
 	t_token_type	type;
@@ -44,6 +47,7 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
+/* COMMAND */
 typedef struct s_cmd
 {
 	char	**args;
@@ -51,6 +55,7 @@ typedef struct s_cmd
 	struct s_cmd *next;
 } t_cmd;
 
+/* SHELL STATE */
 typedef struct s_shell
 {
 	t_cmd *cmds;
