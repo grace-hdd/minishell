@@ -30,6 +30,7 @@ void	ft_token_add_back(t_token **head, t_token *current)
 void	ft_free_tokens(t_token *head)
 {
 	t_token	*tok;
+
 	while (head != NULL)
 	{
 		tok = head;

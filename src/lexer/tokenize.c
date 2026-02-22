@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-t_token *ft_get_next_token(char *input, int *i)
+t_token	*ft_get_next_token(char *input, int *i)
 {
 	if (input[*i] == '|' || input[*i] == '<' || input[*i] == '>')
 		return (ft_get_operator_token(input, i));
@@ -21,7 +21,7 @@ t_token *ft_get_next_token(char *input, int *i)
 	return (ft_get_word_token(input, i));
 }
 
-t_token *ft_tokenize(char *input, char **env)
+t_token	*ft_tokenize(char *input, char **env)
 {
 	t_token	*head;
 	t_token	*tok;
@@ -34,7 +34,7 @@ t_token *ft_tokenize(char *input, char **env)
 		while (input[i] == 32 || input[i] == 9)
 			i++;
 		if (input[i] == '\0')
-			break;
+			break ;
 		tok = ft_get_next_token(input, &i);
 		if (tok == NULL)
 		{

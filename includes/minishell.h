@@ -50,17 +50,17 @@ typedef struct s_redir
 /* COMMAND */
 typedef struct s_cmd
 {
-	char	**args;
-	t_redit **redirs;
-	struct s_cmd *next;
-} t_cmd;
+	char			**args;
+	t_redit			**redirs;
+	struct s_cmd	*next;
+}	t_cmd;
 
 /* SHELL STATE */
 typedef struct s_shell
 {
-	t_cmd *cmds;
-	char **env;
-	int last_status;
+	t_cmd	*cmds;
+	char	**env;
+	int		last_status;
 }	t_shell;
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-t_token *ft_get_double_operator_token(char *input, int *i)
+t_token	*ft_get_double_operator_token(char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] == '<')
 	{
