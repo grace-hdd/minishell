@@ -37,9 +37,7 @@ t_token	*ft_get_word_token(char *input, int *i)
 	t_token	*tok;
 
 	start = *i;
-	while (input[*i] != '\0' && input[*i] != ' ' && input[*i] != '\t'
-		&& input[*i] != '\'' && input[*i] != '"' && input[*i] != '|'
-		&& input[*i] != '<' && input[*i] != '>')
+	while (!ft_is_stop_char(input[*i]))
 		(*i)++;
 	word = ft_substr(input, start, *i - start);
 	if (!word)
