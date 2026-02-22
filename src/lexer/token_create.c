@@ -29,3 +29,22 @@ t_token	*ft_new_token(t_token_type type, char *value)
 	token->next = NULL;
 	return (token);
 }
+
+t_token	*ft_get_word_token(char *input, int *i)
+{
+	int		start;
+	char	*word;
+	t_token	*tok;
+
+	start = *i;
+	while (input[*i] != '\0' && input[*i] != ' ' && input[*i] != '\t'
+		&& input[*i] != '\'' && input[*i] != '"' && input[*i] != '|'
+		&& input[*i] != '<' && input[*i] != '>')
+		(*i)++;
+	word = ft_substr(input, start, *i - start);
+	if (!word)
+		return (NULL);
+	tok = ft_new_token(TOKEN_WORD, word);
+	free(word);
+	return (tok);
+}
