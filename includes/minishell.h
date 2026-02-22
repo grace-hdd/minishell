@@ -69,5 +69,8 @@ t_token	*ft_new_token(t_token_type type, char *value);
 void	ft_token_add_back(t_token **head, t_token *current);
 void	ft_free_tokens(t_token *head);
 int		ft_is_stop_char(char c);
+t_token	*ft_get_operator_token(char *input, int *i);
+t_token	*ft_get_quoted_token(char *input, int *i);
+t_token	*ft_get_word_token(char *input, int *i);
 
 #endif
