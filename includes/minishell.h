@@ -63,4 +63,11 @@ typedef struct s_shell
 	int		last_status;
 }	t_shell;
 
+/* LEXER */
+t_token	*ft_tokenize(char *input, char **env);
+t_token	*ft_new_token(t_token_type type, char *value);
+void	ft_token_add_back(t_token **head, t_token *current);
+void	ft_free_tokens(t_token *head);
+int		ft_is_stop_char(char c);
+
 #endif
