@@ -30,8 +30,8 @@ static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 	if (!new_node)
 		return (1);
 	new_node->type = type;
-	new_node->target = ft_strdup(target);
-	if (!new_node->target)
+	new_node->file = ft_strdup(target);
+	if (!new_node->file)
 	{
 		free(new_node);
 		return (1);

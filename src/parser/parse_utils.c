@@ -41,3 +41,18 @@ void	ft_args_add_back(t_cmd *cmd, char *value)
 	free(cmd->args);
 	cmd->args = new;
 }
+
+void	ft_free_args(char **args)
+{
+	int	i;
+
+	if (args == NULL || *args == NULL)
+		return ;
+	i = 0;
+	while (args[i] != NULL)
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
