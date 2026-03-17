@@ -76,8 +76,8 @@ t_token	*ft_get_word_token(char *input, int *i);
 
 /* PARSER */
 t_cmd	*ft_parse_cmd(t_token **tokens);
-int	ft_parse_redir(t_cmd *cmd, t_token **tokens);
-int	ft_is_redir(t_token_type type);
+int		ft_parse_redir(t_cmd *cmd, t_token **tokens);
+int		ft_is_redir(t_token_type type);
 void	ft_args_add_back(t_cmd *cmd, char *value);
 t_cmd	*ft_parse(t_token *tokens);
 
