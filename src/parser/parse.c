@@ -12,19 +12,20 @@
 
 #include "minishell.h"
 
-void	ft_cmd_add_back(t_cmd **head, t_cmd *new)
+void	ft_free_cmds(t_cmd *head)
 {
 	t_cmd	*tmp;
 
-	if (head == NULL || *head == NULL)
-	{
-		*head = new;
+	if (head == NULL)
 		return ;
+	while (head)
+	{
+		tmp = head->next;
+		ft_free_args(head->args);
+		ft_free_redirs(head->redirs);
+		free(head);
+		head = tmp;
 	}
-	tmp = *head;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
 }
 
 t_cmd	*ft_parse(t_token *tokens)

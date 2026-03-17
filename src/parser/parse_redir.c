@@ -21,10 +21,24 @@ static int	ft_is_valid_redir_target(t_token *tok)
 	return (1);
 }
 
+static void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node)
+{
+    t_redir	*last;
+
+    if (!cmd->redirs)
+    {
+        cmd->redirs = new_node;
+        return ;
+    }
+    last = cmd->redirs;
+    while (last->next)
+        last = last->next;
+    last->next = new_node;
+}
+
 static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 {
 	t_redir	*new_node;
-	t_redir	*last;
 
 	new_node = malloc(sizeof(t_redir));
 	if (!new_node)
@@ -36,16 +50,7 @@ static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 		free(new_node);
 		return (1);
 	}
-	new_node->next = NULL;
-	if (!cmd->redirs)
-	{
-		cmd->redirs = new_node;
-		return (0);
-	}
-	last = cmd->redirs;
-	while (last->next)
-		last = last->next;
-	last->next = new_node;
+	ft_redir_add_back(cmd, new_node);
 	return (0);
 }
 

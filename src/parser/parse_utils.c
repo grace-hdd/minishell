@@ -42,17 +42,46 @@ void	ft_args_add_back(t_cmd *cmd, char *value)
 	cmd->args = new;
 }
 
+void	ft_cmd_add_back(t_cmd **head, t_cmd *cmd)
+{
+	t_cmd	*last;
+
+	if (*head == NULL)
+	{
+		*head = cmd;
+		return ;
+	}
+	last = *head;
+	while (last->next != NULL)
+		last = last->next;
+	last->next = cmd;
+}
+
+
 void	ft_free_args(char **args)
 {
 	int	i;
 
-	if (args == NULL || *args == NULL)
-		return ;
 	i = 0;
-	while (args[i] != NULL)
+	if (args == NULL)
+		return ;
+	while (args != NULL && args[i] != NULL)
 	{
 		free(args[i]);
 		i++;
 	}
 	free(args);
+}
+
+void	ft_free_redirs(t_redir *redir)
+{
+	t_redir	*tmp;
+
+	while (redir != NULL)
+	{
+		tmp = redir->next;
+		free(redir->file);
+		free(redir);
+		redir = tmp;
+	}
 }
