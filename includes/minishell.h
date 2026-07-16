@@ -52,7 +52,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char			**args;
-	t_redir			**redirs;
+	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -73,12 +73,17 @@ int		ft_is_stop_char(char c);
 t_token	*ft_get_operator_token(char *input, int *i);
 t_token	*ft_get_quoted_token(char *input, int *i);
 t_token	*ft_get_word_token(char *input, int *i);
+int		ft_skip_quoted_sequence(char *input, int *i);
 
 /* PARSER */
 t_cmd	*ft_parse_cmd(t_token **tokens);
 int		ft_parse_redir(t_cmd *cmd, t_token **tokens);
 int		ft_is_redir(t_token_type type);
-void	ft_args_add_back(t_cmd *cmd, char *value);
+int		ft_args_add_back(t_cmd *cmd, char *value);
+void	ft_cmd_add_back(t_cmd **head, t_cmd *cmd);
+void	ft_free_args(char **args);
+void	ft_free_redirs(t_redir *redir);
+void	ft_free_cmds(t_cmd *head);
 t_cmd	*ft_parse(t_token *tokens);
 
 /* EXPAND */
@@ -88,5 +93,10 @@ char	*ft_get_var_value(char *name, t_shell *shell);
 char	*ft_get_var_name(char *str, int *i);
 char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_char_to_str(char c);
+
+/* ERROR */
+int		ft_error_msg(const char *msg);
+int		ft_syntax_error(const char *token);
+int		ft_unclosed_quote_error(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 15:59:53 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/16 16:00:19 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/17 00:27:50 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,20 @@
 static void	ft_expand_redirs(t_redir *redir, t_shell *shell)
 {
 	char	*expanded;
+	char	*old;
 
 	while (redir)
 	{
-		expanded = ft_expand_str(redir->file, shell);
-		free(redir->file);
-		redir->file = expanded;
+		if (redir->type != TOKEN_HEREDOC)
+		{
+			old = redir->file;
+			expanded = ft_expand_str(redir->file, shell);
+			if (expanded)
+			{
+				redir->file = expanded;
+				free(old);
+			}
+		}
 		redir = redir->next;
 	}
 }
@@ -28,20 +36,22 @@ static void	ft_expand_redirs(t_redir *redir, t_shell *shell)
 void	ft_expand(t_cmd *cmds, t_shell *shell)
 {
 	char	*expanded;
+	char	*old;
 	int		i;
 
 	while (cmds)
 	{
 		i = 0;
-		if (cmds->args)
+		while (cmds->args && cmds->args[i])
 		{
-			while (cmds->args[i])
+			old = cmds->args[i];
+			expanded = ft_expand_str(cmds->args[i], shell);
+			if (expanded)
 			{
-				expanded = ft_expand_str(cmds->args[i], shell);
-				free(cmds->args[i]);
 				cmds->args[i] = expanded;
-				i++;
+				free(old);
 			}
+			i++;
 		}
 		ft_expand_redirs(cmds->redirs, shell);
 		cmds = cmds->next;

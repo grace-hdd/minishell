@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:00:25 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/16 16:00:29 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/17 00:38:20 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 
 char	*ft_get_var_value(char *name, t_shell *shell)
 {
-	char	*value;
+	int		i;
+	size_t	len;
 
-	if (ft_strcmp(name, "?") == 0)
-		return (ft_itoa(shell->last_status));
-	value = getenv(name);
-	if (!value)
+	if (!name || !shell)
 		return (ft_strdup(""));
-	return (ft_strdup(value));
+	if (ft_strncmp(name, "?", 2) == 0)
+		return (ft_itoa(shell->last_status));
+	len = ft_strlen(name);
+	i = 0;
+	while (shell->env && shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], name, len) == 0
+			&& shell->env[i][len] == '=')
+			return (ft_strdup(shell->env[i] + len + 1));
+		i++;
+	}
+	return (ft_strdup(""));
 }
 
 static char	*ft_expand_var(char *str, int *i, t_shell *shell)
@@ -32,7 +41,7 @@ static char	*ft_expand_var(char *str, int *i, t_shell *shell)
 	(*i)++;
 	name = ft_get_var_name(str, i);
 	if (!name)
-		return (ft_strdup(""));
+		return (NULL);
 	value = ft_get_var_value(name, shell);
 	free(name);
 	if (!value)
@@ -40,29 +49,75 @@ static char	*ft_expand_var(char *str, int *i, t_shell *shell)
 	return (value);
 }
 
+static int	ft_update_quote(char c, char *quote)
+{
+	if (c == '\'' && *quote != '"')
+	{
+		if (*quote == '\'')
+			*quote = 0;
+		else
+			*quote = '\'';
+		return (1);
+	}
+	if (c == '"' && *quote != '\'')
+	{
+		if (*quote == '"')
+			*quote = 0;
+		else
+			*quote = '"';
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_process_expand_char(char *str, int *i, char quote,
+	t_shell *shell, char **result)
+{
+	char	*tmp;
+
+	if (str[*i] == '$' && quote != '\'')
+	{
+		if (str[*i + 1] == '?' || ft_isalnum(str[*i + 1]) || str[*i + 1] == '_')
+			tmp = ft_expand_var(str, i, shell);
+		else
+		{
+			(*i)++;
+			tmp = ft_char_to_str('$');
+		}
+	}
+	else
+		tmp = ft_char_to_str(str[(*i)++]);
+	if (!tmp)
+		return (1);
+	*result = ft_strjoin_free(*result, tmp);
+	free(tmp);
+	if (!*result)
+		return (1);
+	return (0);
+}
+
 char	*ft_expand_str(char *str, t_shell *shell)
 {
 	char	*result;
-	char	*tmp;
 	int		i;
+	char	quote;
 
+	if (!str)
+		return (ft_strdup(""));
 	result = ft_strdup("");
+	if (!result)
+		return (NULL);
 	i = 0;
+	quote = 0;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (ft_update_quote(str[i], &quote))
 		{
-			tmp = ft_expand_var(str, &i, shell);
-			result = ft_strjoin_free(result, tmp);
-			free(tmp);
-		}
-		else
-		{
-			tmp = ft_char_to_str(str[i]);
-			result = ft_strjoin_free(result, tmp);
-			free(tmp);
 			i++;
+			continue ;
 		}
+		if (ft_process_expand_char(str, &i, quote, shell, &result))
+			return (free(result), NULL);
 	}
 	return (result);
 }

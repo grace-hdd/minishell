@@ -21,19 +21,20 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 
 SRC_DIR		= src
 SRCS		= $(SRC_DIR)/main.c \
-			$(SRC_DIR)/lexer/ft_tokenize.c \
-			$(SRC_DIR)/lexer/ft_token_type.c \
-			$(SRC_DIR)/lexer/ft_token_create.c \
-			$(SRC_DIR)/lexer/ft_token_list.c \
-			$(SRC_DIR)/lexer/ft_handle_quotes.c \
-			$(SRC_DIR)/lexer/ft_tokenize_utils.c \
-			$(SRC_DIR)/parser/ft_parse.c \
-			$(SRC_DIR)/parser/ft_parse_cmd.c \
-			$(SRC_DIR)/parser/ft_parse_redir.c \
-			$(SRC_DIR)/parser/ft_parse_utils.c \
-			$(SRC_DIR)/expand/ft_expand.c \
-			$(SRC_DIR)/expand/ft_expand_var.c \
-			$(SRC_DIR)/expand/ft_expand_utils.c
+			$(SRC_DIR)/lexer/tokenize.c \
+			$(SRC_DIR)/lexer/token_type.c \
+			$(SRC_DIR)/lexer/token_create.c \
+			$(SRC_DIR)/lexer/token_list.c \
+			$(SRC_DIR)/lexer/handle_quotes.c \
+			$(SRC_DIR)/lexer/tokenize_utils.c \
+			$(SRC_DIR)/parser/parse.c \
+			$(SRC_DIR)/parser/parse_cmd.c \
+			$(SRC_DIR)/parser/parse_redir.c \
+			$(SRC_DIR)/parser/parse_utils.c \
+			$(SRC_DIR)/expand/expand.c \
+			$(SRC_DIR)/expand/expand_var.c \
+			$(SRC_DIR)/expand/expand_utils.c \
+			$(SRC_DIR)/error/error.c
 
 OBJS		= $(SRCS:.c=.o)
 
