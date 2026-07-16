@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include "libft.h"
+# include "libft/libft.h"
 
 /* TOKEN TYPES */
 typedef enum e_token_type
@@ -80,5 +80,13 @@ int		ft_parse_redir(t_cmd *cmd, t_token **tokens);
 int		ft_is_redir(t_token_type type);
 void	ft_args_add_back(t_cmd *cmd, char *value);
 t_cmd	*ft_parse(t_token *tokens);
+
+/* EXPAND */
+void	ft_expand(t_cmd *cmds, t_shell *shell);
+char	*ft_expand_str(char *str, t_shell *shell);
+char	*ft_get_var_value(char *name, t_shell *shell);
+char	*ft_get_var_name(char *str, int *i);
+char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_char_to_str(char c);
 
 #endif
