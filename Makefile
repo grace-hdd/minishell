@@ -1,42 +1,62 @@
-.RECIPEPREFIX := >
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/07/16 16:01:55 by grhaddad          #+#    #+#              #
+#    Updated: 2026/07/16 16:01:55 by grhaddad         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-NAME        := minishell
+NAME		= minishell
 
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iincludes -Iincludes/libft
+CC		= cc
+CFLAGS		= -Wall -Wextra -Werror
+INCLUDES	= -I includes -I libft
 
-SRCDIR      := src
-OBJDIR      := obj
-LIBFT_DIR   := includes/libft
-LIBFT_A     := $(LIBFT_DIR)/libft.a
+LIBFT_DIR	= includes/libft
+LIBFT		= $(LIBFT_DIR)/libft.a
 
-SRCS        := $(shell find $(SRCDIR) -type f -name "*.c")
-OBJS        := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
+SRC_DIR		= src
+SRCS		= $(SRC_DIR)/main.c \
+			$(SRC_DIR)/lexer/tokenize.c \
+			$(SRC_DIR)/lexer/token_type.c \
+			$(SRC_DIR)/lexer/token_create.c \
+			$(SRC_DIR)/lexer/token_list.c \
+			$(SRC_DIR)/lexer/handle_quotes.c \
+			$(SRC_DIR)/lexer/tokenize_utils.c \
+			$(SRC_DIR)/parser/parse.c \
+			$(SRC_DIR)/parser/parse_cmd.c \
+			$(SRC_DIR)/parser/parse_redir.c \
+			$(SRC_DIR)/parser/parse_utils.c \
+			$(SRC_DIR)/expand/expand.c \
+			$(SRC_DIR)/expand/expand_var.c \
+			$(SRC_DIR)/expand/expand_utils.c \
+			$(SRC_DIR)/error/error.c
 
-RM          := rm -f
-RMDIR       := rm -rf
-MKDIR       := mkdir -p
+OBJS		= $(SRCS:.c=.o)
 
-all: $(NAME)
+all:		$(NAME)
 
-$(NAME): $(LIBFT_A) $(OBJS)
->$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) -lreadline -o $(NAME)
+$(NAME):	$(LIBFT) $(OBJS)
+		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
 
-$(LIBFT_A):
->$(MAKE) -C $(LIBFT_DIR)
+$(LIBFT):
+		$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
->@$(MKDIR) $(dir $@)
->$(CC) $(CFLAGS) -c $< -o $@
+%.o:		%.c
+		$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
->$(RMDIR) $(OBJDIR)
->$(MAKE) -C $(LIBFT_DIR) clean
+		$(MAKE) -C $(LIBFT_DIR) clean
+		rm -f $(OBJS)
 
-fclean: clean
->$(RM) $(NAME)
->$(MAKE) -C $(LIBFT_DIR) fclean
+fclean:		clean
+		$(MAKE) -C $(LIBFT_DIR) fclean
+		rm -f $(NAME)
 
-re: fclean all
+re:		fclean all
 
-.PHONY: all clean fclean re
+.PHONY:		all clean fclean re

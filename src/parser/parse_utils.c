@@ -18,34 +18,55 @@ int	ft_is_redir(t_token_type type)
 		|| type == TOKEN_HEREDOC || type == TOKEN_APPEND);
 }
 
-void	ft_args_add_back(t_cmd *cmd, char *value)
+static char	**ft_grow_args(char **args, int *len)
 {
-	int		len;
-	char	**new;
+	char	**new_args;
 	int		i;
 
-	len = 0;
+	*len = 0;
+	while (args && args[*len])
+		(*len)++;
+	new_args = malloc(sizeof(char *) * (*len + 2));
+	if (!new_args)
+		return (NULL);
 	i = 0;
-	while (cmd->args != NULL && cmd->args[len] != NULL)
-		len++;
-	new = malloc(sizeof(char *) * (len + 2));
-	if (new == NULL)
-		return ;
-	while (i < len)
+	while (i < *len)
 	{
-		new[i] = cmd->args[i];
+		new_args[i] = args[i];
 		i++;
 	}
-	new[len] = ft_strdup(value);
-	new[len + 1] = NULL;
+	return (new_args);
+}
+
+int	ft_args_add_back(t_cmd *cmd, char *value)
+{
+	char	**new_args;
+	int		len;
+
+	if (!cmd)
+		return (1);
+	new_args = ft_grow_args(cmd->args, &len);
+	if (!new_args)
+		return (ft_error_msg("allocation failure"), 1);
+	new_args[len] = ft_strdup(value);
+	if (!new_args[len])
+	{
+		free(new_args);
+		return (ft_error_msg("allocation failure"), 1);
+	}
+	new_args[len + 1] = NULL;
 	free(cmd->args);
-	cmd->args = new;
+	cmd->args = new_args;
+	return (0);
 }
 
 void	ft_cmd_add_back(t_cmd **head, t_cmd *cmd)
 {
 	t_cmd	*last;
 
+	if (!head || !cmd)
+		return ;
+	cmd->next = NULL;
 	if (*head == NULL)
 	{
 		*head = cmd;
@@ -55,33 +76,4 @@ void	ft_cmd_add_back(t_cmd **head, t_cmd *cmd)
 	while (last->next != NULL)
 		last = last->next;
 	last->next = cmd;
-}
-
-
-void	ft_free_args(char **args)
-{
-	int	i;
-
-	i = 0;
-	if (args == NULL)
-		return ;
-	while (args != NULL && args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
-
-void	ft_free_redirs(t_redir *redir)
-{
-	t_redir	*tmp;
-
-	while (redir != NULL)
-	{
-		tmp = redir->next;
-		free(redir->file);
-		free(redir);
-		redir = tmp;
-	}
 }

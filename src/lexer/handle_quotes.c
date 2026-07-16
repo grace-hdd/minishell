@@ -12,25 +12,21 @@
 
 #include "minishell.h"
 
-t_token	*ft_get_quoted_token(char *input, int *i)
+int	ft_skip_quoted_sequence(char *input, int *i)
 {
-	int		start;
-	char	*word;
-	t_token	*tok;
 	char	quote;
 
 	quote = input[*i];
 	(*i)++;
-	start = *i;
-	while (input[*i] != '\0' && input[*i] != quote)
+	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	if (input[*i] == '\0')
-		return (NULL);
-	word = ft_substr(input, start, *i - start);
+		return (ft_unclosed_quote_error());
 	(*i)++;
-	if (!word)
-		return (NULL);
-	tok = ft_new_token(TOKEN_WORD, word);
-	free(word);
-	return (tok);
+	return (0);
+}
+
+t_token	*ft_get_quoted_token(char *input, int *i)
+{
+	return (ft_get_word_token(input, i));
 }
