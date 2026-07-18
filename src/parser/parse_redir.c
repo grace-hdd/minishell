@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
+// Checks whether a token is a valid redirection target
 static int	ft_is_valid_redir_target(t_token *tok)
 {
 	if (!tok)
@@ -21,6 +22,7 @@ static int	ft_is_valid_redir_target(t_token *tok)
 	return (1);
 }
 
+// Appends a redirection node to a command's redirecgtion list
 static void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node)
 {
 	t_redir	*last;
@@ -36,6 +38,7 @@ static void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node)
 	last->next = new_node;
 }
 
+// Creates and stores a new redirection node
 static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 {
 	t_redir	*new_node;
@@ -55,6 +58,7 @@ static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 	return (0);
 }
 
+// Parses all consecutive redirections for the current command
 int	ft_parse_redir(t_cmd *cmd, t_token **tokens)
 {
 	int		redir_type;

@@ -10,14 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
+// Returns true if the token type is a redirection operator
 int	ft_is_redir(t_token_type type)
 {
 	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
 		|| type == TOKEN_HEREDOC || type == TOKEN_APPEND);
 }
 
+// Allocates a larger argument array while preserving existing arguments
 static char	**ft_grow_args(char **args, int *len)
 {
 	char	**new_args;
@@ -38,6 +40,7 @@ static char	**ft_grow_args(char **args, int *len)
 	return (new_args);
 }
 
+// Adds a new argument to the command's argument array
 int	ft_args_add_back(t_cmd *cmd, char *value)
 {
 	char	**new_args;
@@ -60,6 +63,7 @@ int	ft_args_add_back(t_cmd *cmd, char *value)
 	return (0);
 }
 
+// Appends a command to the end of the command list
 void	ft_cmd_add_back(t_cmd **head, t_cmd *cmd)
 {
 	t_cmd	*last;

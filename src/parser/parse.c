@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
+// Frees the array of command arguments
 void	ft_free_args(char **args)
 {
 	int	i;
@@ -27,6 +28,7 @@ void	ft_free_args(char **args)
 	free(args);
 }
 
+// Frees the linked list of redirections
 void	ft_free_redirs(t_redir *redir)
 {
 	t_redir	*tmp;
@@ -40,6 +42,7 @@ void	ft_free_redirs(t_redir *redir)
 	}
 }
 
+// Frees the entire linked list od commands
 void	ft_free_cmds(t_cmd *head)
 {
 	t_cmd	*tmp;
@@ -54,6 +57,7 @@ void	ft_free_cmds(t_cmd *head)
 	}
 }
 
+// Parses the token list into a linked list of commands
 t_cmd	*ft_parse(t_token *tokens)
 {
 	t_cmd	*head;
