@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
+// Appends a token to the end of the token list
 void	ft_token_add_back(t_token **head, t_token *current)
 {
 	t_token	*tok;
@@ -27,6 +28,7 @@ void	ft_token_add_back(t_token **head, t_token *current)
 	tok->next = current;
 }
 
+// Frees the entire linked list of tokens
 void	ft_free_tokens(t_token *head)
 {
 	t_token	*tok;

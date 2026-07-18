@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
+// Determines the next token type and returns the correspponding token
 t_token	*ft_get_next_token(char *input, int *i)
 {
 	if (input[*i] == '|' || input[*i] == '<' || input[*i] == '>')
@@ -21,6 +22,7 @@ t_token	*ft_get_next_token(char *input, int *i)
 	return (ft_get_word_token(input, i));
 }
 
+// Converts the input string into a linked list of tokens
 t_token	*ft_tokenize(char *input)
 {
 	t_token	*head;

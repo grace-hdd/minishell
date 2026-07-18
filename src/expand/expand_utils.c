@@ -6,11 +6,11 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:00:02 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/17 00:25:12 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/18 15:35:32 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 char	*ft_get_var_name(char *str, int *i)
 {

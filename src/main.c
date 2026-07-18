@@ -6,11 +6,11 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:01:13 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/17 00:27:54 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/18 15:34:45 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 static const char	*ft_token_name(t_token_type type)
 {
