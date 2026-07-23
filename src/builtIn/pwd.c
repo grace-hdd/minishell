@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:22 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/23 12:45:39 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/23 16:08:33 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	pwd_cmd(t_shell *shell)
 	char	*env_pwd;
 
 	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		perror("getcwd failed");
 	if (cwd)
 	{
 		printf("%s\n", cwd);
