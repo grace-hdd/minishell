@@ -99,4 +99,7 @@ int		ft_error_msg(const char *msg);
 int		ft_syntax_error(const char *token);
 int		ft_unclosed_quote_error(void);
 
+/* BUILTIN */
+int builtin_cd(char **argv, t_shell *shell);
+
 #endif

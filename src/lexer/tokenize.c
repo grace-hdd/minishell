@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 // Determines the next token type and returns the correspponding token
 t_token	*ft_get_next_token(char *input, int *i)
