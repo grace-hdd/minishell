@@ -66,6 +66,15 @@ typedef struct s_shell
 	int		last_status;
 }	t_shell;
 
+/* EXPAND */
+typedef struct s_expand
+{
+	char	*str;
+	int		*i;
+	char	quote;
+	t_shell	*shell;
+}	t_expand;
+
 /* LEXER */
 t_token	*ft_tokenize(char *input);
 t_token	*ft_new_token(t_token_type type, char *value);

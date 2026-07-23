@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:00:25 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/23 10:50:46 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/23 11:24:57 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,24 @@ static int	ft_update_quote(char c, char *quote)
 	return (0);
 }
 
-static int	ft_process_expand_char(char *str, int *i, char quote,
-	t_shell *shell, char **result)
+static int	ft_process_expand_char(t_expand exp, char **result)
 {
 	char	*tmp;
 
-	if (str[*i] == '$' && quote != '\'')
+	if (exp.str[*exp.i] == '$' && exp.quote != '\'')
 	{
-		if (str[*i + 1] == '?' || ft_isalnum(str[*i + 1]) || str[*i + 1] == '_')
-			tmp = ft_expand_var(str, i, shell);
+		if (exp.str[*exp.i + 1] == '?'
+			|| ft_isalnum(exp.str[*exp.i + 1])
+			|| exp.str[*exp.i + 1] == '_')
+			tmp = ft_expand_var(exp.str, exp.i, exp.shell);
 		else
 		{
-			(*i)++;
+			(*exp.i)++;
 			tmp = ft_char_to_str('$');
 		}
 	}
 	else
-		tmp = ft_char_to_str(str[(*i)++]);
+		tmp = ft_char_to_str(exp.str[(*exp.i)++]);
 	if (!tmp)
 		return (1);
 	*result = ft_strjoin_free(*result, tmp);
@@ -116,7 +117,7 @@ char	*ft_expand_str(char *str, t_shell *shell)
 			i++;
 			continue ;
 		}
-		if (ft_process_expand_char(str, &i, quote, shell, &result))
+		if (ft_process_expand_char((t_expand){str, &i, quote, shell}, &result))
 			return (free(result), NULL);
 	}
 	return (result);
