@@ -20,6 +20,8 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
+extern int	g_signal;
+
 /* TOKEN TYPES */
 typedef enum e_token_type
 {
@@ -100,6 +102,6 @@ int		ft_syntax_error(const char *token);
 int		ft_unclosed_quote_error(void);
 
 /* BUILTIN */
-int builtin_cd(char **argv, t_shell *shell);
+int		builtin_cd(char **argv, t_shell *shell);
 
 #endif

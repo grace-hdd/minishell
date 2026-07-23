@@ -6,13 +6,10 @@
 /*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:27 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/22 15:04:53 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/23 10:19:10 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_cd(char **argv, t_shell *shell)
-{
-	
-}
+int	builtin_cd(char **argv, t_shell *shell);
