@@ -20,23 +20,10 @@ LIBFT_DIR   = includes/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 SRC_DIR     = src
+SRC_SUBDIRS := lexer parser expand error builtIn
 OBJ_DIR     = obj
 
-SRCS        = main.c \
-              $(SRC_DIR)/lexer/tokenize.c \
-              $(SRC_DIR)/lexer/token_type.c \
-              $(SRC_DIR)/lexer/token_create.c \
-              $(SRC_DIR)/lexer/token_list.c \
-              $(SRC_DIR)/lexer/handle_quotes.c \
-              $(SRC_DIR)/lexer/tokenize_utils.c \
-              $(SRC_DIR)/parser/parse.c \
-              $(SRC_DIR)/parser/parse_cmd.c \
-              $(SRC_DIR)/parser/parse_redir.c \
-              $(SRC_DIR)/parser/parse_utils.c \
-              $(SRC_DIR)/expand/expand.c \
-              $(SRC_DIR)/expand/expand_var.c \
-              $(SRC_DIR)/expand/expand_utils.c \
-              $(SRC_DIR)/error/error.c
+SRCS        = main.c $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
 
 # Map each .c file path to an equivalent path inside OBJ_DIR
 OBJS        = $(SRCS:%.c=$(OBJ_DIR)/%.o)
