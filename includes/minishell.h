@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -112,5 +113,6 @@ int		ft_unclosed_quote_error(void);
 
 /* BUILTIN */
 int		pwd_cmd(t_shell *shell);
+int		echo(t_shell *shell, t_cmd *cmd);
 
 #endif
