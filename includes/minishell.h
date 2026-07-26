@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -114,5 +115,9 @@ int		ft_unclosed_quote_error(void);
 /* BUILTIN */
 int		pwd_cmd(t_shell *shell);
 int		echo(t_shell *shell, t_cmd *cmd);
+int		cd_cmd(t_shell *shell, t_cmd *cmd);
+int		set_env_val(t_shell *shell, const char *key, const char *value);
+char	*get_env_val(t_shell *shell, const char *key);
+int		env_cmd(t_shell *shell, t_cmd *cmd);
 
 #endif
