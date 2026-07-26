@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:18 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/24 16:05:16 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/27 01:05:59 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	echo_cmd(t_shell *shell, t_cmd *cmd)
 	new_line = true;
 	i = 1;
 	(void)shell;
-	while (cmd->args[i] && is_n_option(cmd->args[i]) == 1)
+	while (cmd->args[i] && is_n_option(cmd->args[i]))
 	{
 		new_line = false;
 		i++;

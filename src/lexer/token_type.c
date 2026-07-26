@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // Creates a token for a double-character operator (<< or >>)
 t_token	*ft_get_double_operator_token(char *input, int *i)
