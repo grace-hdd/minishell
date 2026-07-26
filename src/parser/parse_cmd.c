@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // Frees a single command and all its allocated data
 static void	ft_free_one_cmd(t_cmd *cmd)
