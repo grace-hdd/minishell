@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:27 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/27 01:33:39 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/27 01:59:01 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	cd_error(t_shell *shell, const char *msg, const char *arg)
 // Handles system call error printing when chdir fails
 static int	cd_perror(t_shell *shell, const char *path)
 {
-	fprintf(stderr, "minishell: cd: %s: ");
+	fprintf(stderr, "minishell: cd: ");
 	perror(path);
 	shell->last_status = 1;
 	return (1);
