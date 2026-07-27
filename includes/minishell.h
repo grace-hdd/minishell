@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -123,5 +124,8 @@ int		export_cmd(t_shell *shell, t_cmd *cmd);
 int		print_sorted_export(t_shell *shell);
 int		unset_cmd(t_shell *shell, t_cmd *cmd);
 int		exit_cmd(t_shell *shell, t_cmd *cmd);
+
+/* SIGNALS */
+void	setup_signals(void);
 
 #endif
