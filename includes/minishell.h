@@ -120,6 +120,8 @@ int		set_env_val(t_shell *shell, const char *key, const char *value);
 char	*get_env_val(t_shell *shell, const char *key);
 int		env_cmd(t_shell *shell, t_cmd *cmd);
 int		export_cmd(t_shell *shell, t_cmd *cmd);
+int		print_sorted_export(t_shell *shell);
 int		unset_cmd(t_shell *shell, t_cmd *cmd);
+int		exit_cmd(t_shell *shell, t_cmd *cmd);
 
 #endif
