@@ -63,6 +63,7 @@ int	ft_parse_redir(t_cmd *cmd, t_token **tokens)
 {
 	int		redir_type;
 	t_token	*target;
+	char	*err_val;
 
 	if (!cmd || !tokens || !*tokens)
 		return (1);
@@ -72,7 +73,12 @@ int	ft_parse_redir(t_cmd *cmd, t_token **tokens)
 		*tokens = (*tokens)->next;
 		target = *tokens;
 		if (!ft_is_valid_redir_target(target))
-			return (ft_syntax_error(target ? target->value : NULL), 1);
+		{
+			err_val = NULL;
+			if (target)
+				err_val = target->value;
+			return (ft_syntax_error(err_val), 1);
+		}
 		if (ft_add_redir_node(cmd, redir_type, target->value))
 			return (1);
 		*tokens = target->next;
