@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:18 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/27 01:05:59 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/27 19:21:22 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_n_option(char *arg)
 {
 	int	i;
-	
+
 	if (!arg || arg[0] != '-' || arg[1] != 'n')
 		return (0);
 	i = 1;
