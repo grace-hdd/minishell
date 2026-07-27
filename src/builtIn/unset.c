@@ -1,0 +1,104 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/27 19:00:35 by grhaddad          #+#    #+#             */
+/*   Updated: 2026/07/27 19:00:35 by grhaddad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static void	remove_env_var(t_shell *shell, int index)
+{
+	int		i;
+	int		len;
+	char	**new_env;
+
+	len = 0;
+	while (shell->env[len])
+		len++;
+	new_env = malloc(sizeof(char *) * len);
+	if (!new_env)
+		return ;
+	i = 0;
+	len = 0;
+	while (shell->env[i])
+	{
+		if (i != index)
+			new_env[len++] = shell->env[i];
+		else
+			free(shell->env[i]);
+		i++;
+	}
+	new_env[len] = NULL;
+	free(shell->env);
+	shell->env = new_env;
+}
+
+static int	is_valid_unset_key(const char *str)
+{
+	int	i;
+
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	i = 1;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static void	unset_single_var(t_shell *shell, const char *key)
+{
+	int		i;
+	size_t	key_len;
+
+	if (!shell || !shell->env || !key)
+		return ;
+	key_len = ft_strlen(key);
+	i = 0;
+	while (shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], key, key_len) == 0
+			&& (shell->env[i][key_len] == '='
+			|| shell->env[i][key_len] == '\0'))
+		{
+			remove_env_var(shell, i);
+			return ;
+		}
+		i++;
+	}
+}
+
+int	unset_cmd(t_shell *shell, t_cmd *cmd)
+{
+	int	i;
+	int	err;
+
+	if (!shell || !cmd)
+		return (1);
+	i = 1;
+	err = 0;
+	while (cmd->args[i])
+	{
+		if (!is_valid_unset_key(cmd->args[i]))
+		{
+			write(STDERR_FILENO, "minishell: unset: `", 19);
+			write(STDERR_FILENO, cmd->args[i], ft_strlen(cmd->args[i]));
+			write(STDERR_FILENO, "': not a valid identifier\n", 26);
+			err = 1;
+		}
+		else
+			unset_single_var(shell, cmd->args[i]);
+		i++;
+	}
+	shell->last_status = err;
+	return (err);
+}
