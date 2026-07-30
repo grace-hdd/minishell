@@ -78,6 +78,14 @@ typedef struct s_expand
 	t_shell	*shell;
 }	t_expand;
 
+/* ENV */
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 /* LEXER */
 t_token	*ft_tokenize(char *input);
 t_token	*ft_new_token(t_token_type type, char *value);

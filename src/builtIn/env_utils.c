@@ -96,3 +96,4 @@ int	set_env_val(t_shell *shell, const char *key, const char *value)
 	}
 	return (add_new_env(shell, new_entry));
 }
+
