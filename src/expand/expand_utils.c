@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:00:02 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/22 15:03:08 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:50:29 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*ft_get_var_name(char *str, int *i)
 {

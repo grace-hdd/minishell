@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-// Allocates and initializes a new token
 t_token	*ft_new_token(t_token_type type, char *value)
 {
 	t_token	*token;
@@ -33,7 +32,6 @@ t_token	*ft_new_token(t_token_type type, char *value)
 	return (token);
 }
 
-// Extracts a word from the input and creates a WORD token
 t_token	*ft_get_word_token(char *input, int *i)
 {
 	int		start;

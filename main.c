@@ -5,64 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/16 16:01:13 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/27 01:15:39 by grhaddad         ###   ########.fr       */
+/*   Created: 2026/07/27 19:21:50 by grhaddad          #+#    #+#             */
+/*   Updated: 2026/07/30 14:44:54 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-static const char	*ft_token_name(t_token_type type)
+static int	ft_strcmp(char *s1, char *s2)
 {
-	if (type == TOKEN_WORD)
-		return ("WORD");
-	if (type == TOKEN_PIPE)
-		return ("PIPE");
-	if (type == TOKEN_REDIR_IN)
-		return ("<");
-	if (type == TOKEN_REDIR_OUT)
-		return (">");
-	if (type == TOKEN_HEREDOC)
-		return ("<<");
-	if (type == TOKEN_APPEND)
-		return (">>");
-	return ("EOF");
-}
-
-static void	ft_print_tokens(t_token *tokens)
-{
-	while (tokens)
-	{
-		printf("[TOKEN] %-4s : %s\n",
-			ft_token_name(tokens->type), tokens->value);
-		tokens = tokens->next;
-	}
-}
-
-static void	ft_print_cmds(t_cmd *cmds)
-{
-	int		i;
-	int		j;
-	t_redir	*r;
+	int	i;
 
 	i = 0;
-	while (cmds)
-	{
-		printf("[CMD %d]\n", i++);
-		j = 0;
-		while (cmds->args && cmds->args[j])
-		{
-			printf("  arg[%d] = %s\n", j, cmds->args[j]);
-			j++;
-		}
-		r = cmds->redirs;
-		while (r)
-		{
-			printf("  redir %s -> %s\n", ft_token_name(r->type), r->file);
-			r = r->next;
-		}
-		cmds = cmds->next;
-	}
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 static int	ft_process_input(char *input, t_shell *shell)
@@ -70,44 +27,66 @@ static int	ft_process_input(char *input, t_shell *shell)
 	t_token	*tokens;
 
 	if (!input || !*input)
+		return (shell->last_status);
+	if (ft_strcmp(input, "clear") == 0)
+	{
+		write(STDOUT_FILENO, "\033[H\033[2J", 7);
 		return (0);
+	}
+	if (ft_validate_quotes(input))
+		return (2);
 	tokens = ft_tokenize(input);
 	if (!tokens)
 		return (2);
-	ft_print_tokens(tokens);
+	if (ft_validate_syntax(tokens))
+	{
+		ft_free_tokens(tokens);
+		return (2);
+	}
 	shell->cmds = ft_parse(tokens);
 	ft_free_tokens(tokens);
 	if (!shell->cmds)
 		return (2);
 	ft_expand(shell->cmds, shell);
-	ft_print_cmds(shell->cmds);
 	return (0);
 }
 
-int	main(int argc, char **argv, char **env)
+static int	ft_shell_loop(t_shell *shell)
 {
-	t_shell	shell;
 	char	*input;
 
-	(void)argc;
-	(void)argv;
-	shell.env = env;
-	shell.last_status = 0;
-	shell.cmds = NULL;
 	while (1)
 	{
+		setup_signals();
 		input = readline("minishell$ ");
 		if (!input)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
 		if (*input)
 			add_history(input);
-		shell.last_status = ft_process_input(input, &shell);
-		ft_free_cmds(shell.cmds);
-		shell.cmds = NULL;
+		shell->last_status = ft_process_input(input, shell);
+		ft_free_cmds(shell->cmds);
+		shell->cmds = NULL;
 		free(input);
 	}
+	return (shell->last_status);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	shell;
+
+	(void)argc;
+	(void)argv;
+	init_environment(&shell, envp);
+	if (!shell.env)
+		return (ft_error_msg("allocation failure"));
+	shell.last_status = 0;
+	shell.cmds = NULL;
+	setup_signals();
+	shell.last_status = ft_shell_loop(&shell);
+	free_environment(&shell);
 	return (shell.last_status);
 }

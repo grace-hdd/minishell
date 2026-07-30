@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_helpers.c                                       :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-/**
- * Executes the env builtin command.
- * Rejects extra arguments per subject rules. Iterates through shell->env
- * and prints only variables containing '=' to STDOUT_FILENO.
- * Updates shell->last_status on exit (0 for success, 1 for error).
-*/
 char	*get_env_val(t_shell *shell, const char *key)
 {
 	int		i;
@@ -71,9 +65,28 @@ static int	add_new_env(t_shell *shell, char *new_entry)
 	return (0);
 }
 
-int	set_env_val(t_shell *shell, const char *key, const char *value)
+static int	update_existing_env(t_shell *shell, const char *key,
+		size_t key_len, char *new_entry)
 {
 	int		i;
+
+	i = 0;
+	while (shell->env && shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], key, key_len) == 0
+			&& shell->env[i][key_len] == '=')
+		{
+			free(shell->env[i]);
+			shell->env[i] = new_entry;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	set_env_val(t_shell *shell, const char *key, const char *value)
+{
 	size_t	key_len;
 	char	*new_entry;
 
@@ -83,17 +96,12 @@ int	set_env_val(t_shell *shell, const char *key, const char *value)
 	if (!new_entry)
 		return (1);
 	key_len = ft_strlen(key);
-	i = -1;
-	while (shell->env && shell->env[++i])
+	if (update_existing_env(shell, key, key_len, new_entry))
+		return (0);
+	if (add_new_env(shell, new_entry))
 	{
-		if (ft_strncmp(shell->env[i], key, key_len) == 0
-			&& shell->env[i][key_len] == '=')
-		{
-			free(shell->env[i]);
-			shell->env[i] = new_entry;
-			return (0);
-		}
+		free(new_entry);
+		return (1);
 	}
-	return (add_new_env(shell, new_entry));
+	return (0);
 }
-

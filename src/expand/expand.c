@@ -6,11 +6,11 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 15:59:53 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/18 15:35:32 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:50:21 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 static void	ft_expand_redirs(t_redir *redir, t_shell *shell)
 {

@@ -77,9 +77,19 @@ static char	**dup_env_array(char **env, int *count)
 	dup = malloc(sizeof(char *) * (*count + 1));
 	if (!dup)
 		return (NULL);
-	i = -1;
-	while (++i < *count)
-		dup[i] = env[i];
+	i = 0;
+	while (i < *count)
+	{
+		dup[i] = ft_strdup(env[i]);
+		if (!dup[i])
+		{
+			while (i > 0)
+				free(dup[--i]);
+			free(dup);
+			return (NULL);
+		}
+		i++;
+	}
 	dup[i] = NULL;
 	return (dup);
 }

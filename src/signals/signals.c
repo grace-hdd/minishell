@@ -10,11 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-/**
- * Signal handler for SIGINT (Ctrl-C) in interactive mode.
- */
 static void	handle_sigint(int sig)
 {
 	(void)sig;
@@ -24,9 +21,6 @@ static void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-/**
- * Sets up signal behavior for interactive prompt mode.
- */
 void	setup_signals(void)
 {
 	struct sigaction	sa_int;

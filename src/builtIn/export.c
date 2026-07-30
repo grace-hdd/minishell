@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/**
- * Checks if the string up to '=' is a valid Bash identifier.
- */
 static int	is_valid_identifier(const char *str)
 {
 	int	i;
@@ -31,9 +28,6 @@ static int	is_valid_identifier(const char *str)
 	return (1);
 }
 
-/**
- * Prints error message for invalid export identifiers.
- */
 static int	export_error(t_shell *shell, const char *arg)
 {
 	write(STDERR_FILENO, "minishell: export: `", 20);
@@ -43,9 +37,24 @@ static int	export_error(t_shell *shell, const char *arg)
 	return (1);
 }
 
-/**
- * Parses and processes a single argument for export.
- */
+static int	add_key_if_missing(t_shell *shell, const char *key)
+{
+	int		i;
+	size_t	key_len;
+
+	i = 0;
+	key_len = ft_strlen(key);
+	while (shell->env && shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], key, key_len) == 0
+			&& (shell->env[i][key_len] == '='
+			|| shell->env[i][key_len] == '\0'))
+			return (0);
+		i++;
+	}
+	return (set_env_val(shell, key, ""));
+}
+
 static int	process_export_arg(t_shell *shell, char *arg)
 {
 	char	*eq;
@@ -56,7 +65,7 @@ static int	process_export_arg(t_shell *shell, char *arg)
 		return (export_error(shell, arg));
 	eq = ft_strchr(arg, '=');
 	if (!eq)
-		return (0);
+		return (add_key_if_missing(shell, arg));
 	key = ft_substr(arg, 0, eq - arg);
 	if (!key)
 		return (1);
@@ -65,9 +74,6 @@ static int	process_export_arg(t_shell *shell, char *arg)
 	return (status);
 }
 
-/**
- * Executes the export builtin command.
- */
 int	export_cmd(t_shell *shell, t_cmd *cmd)
 {
 	int	i;

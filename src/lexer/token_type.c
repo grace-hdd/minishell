@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-// Creates a token for a double-character operator (<< or >>)
 t_token	*ft_get_double_operator_token(char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] == '<')
@@ -28,7 +27,6 @@ t_token	*ft_get_double_operator_token(char *input, int *i)
 	return (NULL);
 }
 
-// Identifies and creates the appropriate operator token
 t_token	*ft_get_operator_token(char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] == '<')

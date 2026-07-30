@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-// Skips over a quoted string and checks for unclosed quotes
 int	ft_skip_quoted_sequence(char *input, int *i)
 {
 	char	quote;
@@ -27,7 +26,6 @@ int	ft_skip_quoted_sequence(char *input, int *i)
 	return (0);
 }
 
-// Returns a word token containing the quoted text
 t_token	*ft_get_quoted_token(char *input, int *i)
 {
 	return (ft_get_word_token(input, i));

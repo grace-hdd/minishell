@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 15:01:18 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/27 19:21:22 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:47:47 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ int	echo_cmd(t_shell *shell, t_cmd *cmd)
 	}
 	while (cmd->args[i])
 	{
-		printf("%s", cmd->args[i]);
+		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
 		if (cmd->args[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (new_line)
-		printf("\n");
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	shell->last_status = 0;
 	return (0);
 }

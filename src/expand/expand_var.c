@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grhaddad <grhaddad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 16:00:25 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/07/23 16:09:22 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:50:37 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*ft_get_var_value(char *name, t_shell *shell)
 {

@@ -20,12 +20,12 @@ LIBFT_DIR   = includes/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 SRC_DIR     = src
-SRC_SUBDIRS := lexer parser expand error builtIn
+SRC_SUBDIRS := lexer parser expand error builtIn signals
 OBJ_DIR     = obj
 
-SRCS        = main.c $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
+SRCS        = main.c \
+			$(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
 
-# Map each .c file path to an equivalent path inside OBJ_DIR
 OBJS        = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all:        $(NAME)
@@ -36,7 +36,6 @@ $(NAME):    $(LIBFT) $(OBJS)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-# Creates the target's parent directory automatically before compiling
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

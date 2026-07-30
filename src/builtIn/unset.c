@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	remove_env_var(t_shell *shell, int index)
+static int	remove_env_var(t_shell *shell, int index)
 {
 	int		i;
 	int		len;
@@ -23,7 +23,7 @@ static void	remove_env_var(t_shell *shell, int index)
 		len++;
 	new_env = malloc(sizeof(char *) * len);
 	if (!new_env)
-		return ;
+		return (1);
 	i = 0;
 	len = 0;
 	while (shell->env[i])
@@ -37,6 +37,7 @@ static void	remove_env_var(t_shell *shell, int index)
 	new_env[len] = NULL;
 	free(shell->env);
 	shell->env = new_env;
+	return (0);
 }
 
 static int	is_valid_unset_key(const char *str)
@@ -55,13 +56,13 @@ static int	is_valid_unset_key(const char *str)
 	return (1);
 }
 
-static void	unset_single_var(t_shell *shell, const char *key)
+static int	unset_single_var(t_shell *shell, const char *key)
 {
 	int		i;
 	size_t	key_len;
 
 	if (!shell || !shell->env || !key)
-		return ;
+		return (0);
 	key_len = ft_strlen(key);
 	i = 0;
 	while (shell->env[i])
@@ -70,11 +71,11 @@ static void	unset_single_var(t_shell *shell, const char *key)
 			&& (shell->env[i][key_len] == '='
 			|| shell->env[i][key_len] == '\0'))
 		{
-			remove_env_var(shell, i);
-			return ;
+			return (remove_env_var(shell, i));
 		}
 		i++;
 	}
+	return (0);
 }
 
 int	unset_cmd(t_shell *shell, t_cmd *cmd)
@@ -95,8 +96,8 @@ int	unset_cmd(t_shell *shell, t_cmd *cmd)
 			write(STDERR_FILENO, "': not a valid identifier\n", 26);
 			err = 1;
 		}
-		else
-			unset_single_var(shell, cmd->args[i]);
+		else if (unset_single_var(shell, cmd->args[i]))
+			err = 1;
 		i++;
 	}
 	shell->last_status = err;

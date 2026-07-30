@@ -10,55 +10,83 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
+#include <fcntl.h>
 
-// Checks whether a token is a valid redirection target
-static int	ft_is_valid_redir_target(t_token *tok)
+static int	ft_init_heredoc_node(t_redir **new_node, const char *target)
 {
-	if (!tok)
+	char	*path;
+
+	path = ft_create_heredoc_file();
+	if (!path)
+	{
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	if (ft_write_heredoc(path, target))
+	{
+		unlink(path);
+		free(path);
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	*new_node = malloc(sizeof(t_redir));
+	if (!*new_node)
+	{
+		free(path);
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	(*new_node)->type = TOKEN_HEREDOC;
+	(*new_node)->file = path;
+	return (0);
+}
+
+static int	ft_init_redir_node(t_redir **new_node, int type,
+		const char *target)
+{
+	*new_node = malloc(sizeof(t_redir));
+	if (!*new_node)
+	{
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	(*new_node)->type = type;
+	(*new_node)->file = ft_strdup(target);
+	if (!(*new_node)->file)
+	{
+		free(*new_node);
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_is_valid_target(t_token *target)
+{
+	if (!target)
 		return (0);
-	if (tok->type == TOKEN_PIPE || ft_is_redir(tok->type))
+	if (target->type == TOKEN_PIPE || ft_is_redir(target->type))
 		return (0);
 	return (1);
 }
 
-// Appends a redirection node to a command's redirecgtion list
-static void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node)
-{
-	t_redir	*last;
-
-	if (!cmd->redirs)
-	{
-		cmd->redirs = new_node;
-		return ;
-	}
-	last = cmd->redirs;
-	while (last->next)
-		last = last->next;
-	last->next = new_node;
-}
-
-// Creates and stores a new redirection node
 static int	ft_add_redir_node(t_cmd *cmd, int type, const char *target)
 {
 	t_redir	*new_node;
+	int		status;
 
-	new_node = malloc(sizeof(t_redir));
-	if (!new_node)
-		return (ft_error_msg("allocation failure"), 1);
-	new_node->type = type;
-	new_node->file = ft_strdup(target);
+	if (type == TOKEN_HEREDOC)
+		status = ft_init_heredoc_node(&new_node, target);
+	else
+		status = ft_init_redir_node(&new_node, type, target);
+	if (status)
+		return (1);
 	new_node->next = NULL;
-	if (!new_node->file)
-	{
-		free(new_node);
-		return (ft_error_msg("allocation failure"), 1);
-	}
 	ft_redir_add_back(cmd, new_node);
 	return (0);
 }
 
-// Parses all consecutive redirections for the current command
 int	ft_parse_redir(t_cmd *cmd, t_token **tokens)
 {
 	int		redir_type;
@@ -72,12 +100,13 @@ int	ft_parse_redir(t_cmd *cmd, t_token **tokens)
 		redir_type = (*tokens)->type;
 		*tokens = (*tokens)->next;
 		target = *tokens;
-		if (!ft_is_valid_redir_target(target))
+		if (!ft_is_valid_target(target))
 		{
 			err_val = NULL;
 			if (target)
 				err_val = target->value;
-			return (ft_syntax_error(err_val), 1);
+			ft_syntax_error(err_val);
+			return (1);
 		}
 		if (ft_add_redir_node(cmd, redir_type, target->value))
 			return (1);

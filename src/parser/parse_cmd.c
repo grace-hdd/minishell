@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-// Frees a single command and all its allocated data
 static void	ft_free_one_cmd(t_cmd *cmd)
 {
 	if (!cmd)
@@ -22,7 +21,6 @@ static void	ft_free_one_cmd(t_cmd *cmd)
 	free(cmd);
 }
 
-// Processes one toke, adding it as an argument or redirection
 static int	ft_parse_cmd_token(t_cmd *cmd, t_token **tokens)
 {
 	if ((*tokens)->type == TOKEN_WORD)
@@ -38,7 +36,6 @@ static int	ft_parse_cmd_token(t_cmd *cmd, t_token **tokens)
 	return (1);
 }
 
-// Builds a single command from the token list until a pipe is reached
 t_cmd	*ft_parse_cmd(t_token **tokens)
 {
 	t_cmd	*cmd;

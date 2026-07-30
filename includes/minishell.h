@@ -78,14 +78,6 @@ typedef struct s_expand
 	t_shell	*shell;
 }	t_expand;
 
-/* ENV */
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
 /* LEXER */
 t_token	*ft_tokenize(char *input);
 t_token	*ft_new_token(t_token_type type, char *value);
@@ -107,6 +99,9 @@ void	ft_free_args(char **args);
 void	ft_free_redirs(t_redir *redir);
 void	ft_free_cmds(t_cmd *head);
 t_cmd	*ft_parse(t_token *tokens);
+void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node);
+char	*ft_create_heredoc_file(void);
+int		ft_write_heredoc(const char *path, const char *delimiter);
 
 /* EXPAND */
 void	ft_expand(t_cmd *cmds, t_shell *shell);
@@ -120,10 +115,12 @@ char	*ft_char_to_str(char c);
 int		ft_error_msg(const char *msg);
 int		ft_syntax_error(const char *token);
 int		ft_unclosed_quote_error(void);
+int		ft_validate_quotes(char *input);
+int		ft_validate_syntax(t_token *tokens);
 
 /* BUILTIN */
 int		pwd_cmd(t_shell *shell);
-int		echo(t_shell *shell, t_cmd *cmd);
+int		echo_cmd(t_shell *shell, t_cmd *cmd);
 int		cd_cmd(t_shell *shell, t_cmd *cmd);
 int		set_env_val(t_shell *shell, const char *key, const char *value);
 char	*get_env_val(t_shell *shell, const char *key);
@@ -132,6 +129,9 @@ int		export_cmd(t_shell *shell, t_cmd *cmd);
 int		print_sorted_export(t_shell *shell);
 int		unset_cmd(t_shell *shell, t_cmd *cmd);
 int		exit_cmd(t_shell *shell, t_cmd *cmd);
+void	init_environment(t_shell *shell, char **envp);
+void	free_environment(t_shell *shell);
+char	*ft_get_cmd_path(char *cmd, t_shell *shell);
 
 /* SIGNALS */
 void	setup_signals(void);
