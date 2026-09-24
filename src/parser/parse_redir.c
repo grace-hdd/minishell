@@ -6,39 +6,33 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 17:04:56 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/02/25 17:04:56 by grhaddad         ###   ########.fr       */
+/*   Updated: 2026/09/18 19:52:10 by ysarrouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 #include <fcntl.h>
 
 static int	ft_init_heredoc_node(t_redir **new_node, const char *target)
 {
-	char	*path;
-
-	path = ft_create_heredoc_file();
-	if (!path)
-	{
-		ft_error_msg("allocation failure");
-		return (1);
-	}
-	if (ft_write_heredoc(path, target))
-	{
-		unlink(path);
-		free(path);
-		ft_error_msg("allocation failure");
-		return (1);
-	}
 	*new_node = malloc(sizeof(t_redir));
 	if (!*new_node)
 	{
-		free(path);
 		ft_error_msg("allocation failure");
 		return (1);
 	}
 	(*new_node)->type = TOKEN_HEREDOC;
-	(*new_node)->file = path;
+	(*new_node)->file = NULL;
+	(*new_node)->fd = -1;
+	(*new_node)->delimiter = ft_hd_delimiter((char *)target,
+			&(*new_node)->heredoc_expand);
+	if (!(*new_node)->delimiter)
+	{
+		free(*new_node);
+		ft_error_msg("allocation failure");
+		return (1);
+	}
+	(*new_node)->next = NULL;
 	return (0);
 }
 
@@ -53,6 +47,9 @@ static int	ft_init_redir_node(t_redir **new_node, int type,
 	}
 	(*new_node)->type = type;
 	(*new_node)->file = ft_strdup(target);
+	(*new_node)->delimiter = NULL;
+	(*new_node)->heredoc_expand = 0;
+	(*new_node)->fd = -1;
 	if (!(*new_node)->file)
 	{
 		free(*new_node);

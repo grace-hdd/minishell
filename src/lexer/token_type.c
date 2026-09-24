@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
-t_token	*ft_get_double_operator_token(char *input, int *i)
+static t_token	*ft_get_double_operator_token(char *input, int *i)
 {
 	if (input[*i] == '<' && input[*i + 1] == '<')
 	{

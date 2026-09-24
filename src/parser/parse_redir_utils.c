@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_quotes.c                                    :+:      :+:    :+:   */
+/*   parse_redir_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 20:58:24 by grhaddad          #+#    #+#             */
-/*   Updated: 2026/02/22 20:58:24 by grhaddad         ###   ########.fr       */
+/*   Created: 2026/07/30 16:20:42 by grhaddad          #+#    #+#             */
+/*   Updated: 2026/07/30 16:20:42 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_skip_quoted_sequence(char *input, int *i)
+void	ft_redir_add_back(t_cmd *cmd, t_redir *new_node)
 {
-	char	quote;
+	t_redir	*last;
 
-	quote = input[*i];
-	(*i)++;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	if (input[*i] == '\0')
-		return (ft_unclosed_quote_error());
-	(*i)++;
-	return (0);
+	if (!cmd->redirs)
+	{
+		cmd->redirs = new_node;
+		return ;
+	}
+	last = cmd->redirs;
+	while (last->next)
+		last = last->next;
+	last->next = new_node;
 }

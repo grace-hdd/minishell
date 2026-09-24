@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 static void	ft_free_one_cmd(t_cmd *cmd)
 {
